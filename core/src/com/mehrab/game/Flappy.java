@@ -1,32 +1,36 @@
 package com.mehrab.game;
 
-import com.mehrab.game.States.GameStateManager;
+import com.mehrab.game.states.GameStateManager;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mehrab.game.states.MenuState;
 
 public class Flappy extends ApplicationAdapter {
-	//private GameStateManager stateManager;
+	private GameStateManager stateManager;
 	private SpriteBatch batch;
-	Texture img;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		//stateManager = new GameStateManager();
+		stateManager = new GameStateManager();
+		Gdx.gl.glClearColor(1, 1f, 1, 1);
+		// push a new menu state into the stack upon launch
+		stateManager.pushState(new MenuState(stateManager));
 	}
 
 	@Override
 	public void render () {
-		//stateManager.update(Gdx.graphics.getDeltaTime()); // Provide time between each frame
-		//stateManager.render(batch); // Provide the batch file
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // white screen
+
+		// update and render the pushed state
+		stateManager.update(Gdx.graphics.getDeltaTime());
+		stateManager.render(batch);
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+		stateManager.dispose();
 	}
 }

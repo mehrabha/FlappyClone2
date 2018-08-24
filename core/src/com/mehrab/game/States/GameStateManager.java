@@ -1,4 +1,4 @@
-package com.mehrab.game.States;
+package com.mehrab.game.states;
 
 import java.util.Stack;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,7 +11,7 @@ public class GameStateManager {
     }
 
     public void pushState(State s) {
-        states.push(s);
+        states.push(s); // push any subclass object into the stack
     }
 
     public void popState() {
@@ -28,10 +28,10 @@ public class GameStateManager {
     }
 
     public void render(SpriteBatch batch) {
-        states.peek().render(batch); // Render new state
+        states.peek().render(batch); // Render the state at the top of the stack
     }
 
-    public void dispose(SpriteBatch batch) {
-        states.peek().dispose(batch);
+    public void dispose() {
+        states.peek().dispose();
     }
 }
