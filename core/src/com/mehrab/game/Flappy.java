@@ -15,7 +15,7 @@ public class Flappy extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		stateManager = new GameStateManager();
-		Gdx.gl.glClearColor(1, 1f, 1, 1);
+		Gdx.gl.glClearColor(1, 1, 1, 1);
 		// push a new menu state into the stack upon launch
 		stateManager.pushState(new MenuState(stateManager));
 	}
@@ -25,7 +25,7 @@ public class Flappy extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // white screen
 
 		// update and render the pushed state
-		stateManager.update(Gdx.graphics.getDeltaTime());
+		stateManager.update();
 		stateManager.render(batch);
 	}
 	

@@ -10,12 +10,12 @@ public abstract class State {
     protected GameStateManager stateManager;
 
     protected State(GameStateManager gsm) {
-        stateManager = gsm; // Pass on
+        stateManager = gsm;
         cameraPreset = new OrthographicCamera();
     }
 
     protected abstract void handleInput();
-    public abstract void update(float time);
+    public abstract void update();
     public abstract void render(SpriteBatch batch);
     public abstract void dispose();
 }

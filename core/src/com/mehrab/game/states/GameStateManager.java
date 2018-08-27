@@ -23,8 +23,8 @@ public class GameStateManager {
         states.push(s); // Replace with new state if it is provided
     }
 
-    public void update(float Time) {
-        states.peek().update(Time); // Update new state
+    public void update() {
+        states.peek().update(); // Update new state
     }
 
     public void render(SpriteBatch batch) {

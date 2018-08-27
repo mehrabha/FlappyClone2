@@ -9,7 +9,8 @@ public class MenuState extends State{
     private Texture playButton;
 
     public MenuState(GameStateManager gsm) {
-        super(gsm);
+        super(gsm); // gsm is stored in the variable stateManager
+
         background = new Texture("bg.png");
         playButton = new Texture("playbtn.png");
     }
@@ -26,7 +27,7 @@ public class MenuState extends State{
     }
 
     @Override
-    public void update(float time) {
+    public void update() {
         handleInput();
     }
 
