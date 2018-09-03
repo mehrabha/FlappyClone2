@@ -11,6 +11,7 @@ public class MenuState extends State{
     public MenuState(GameStateManager gsm) {
         super(gsm); // gsm is stored in the variable stateManager
 
+        cameraPreset.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
         background = new Texture("bg.png");
         playButton = new Texture("playbtn.png");
     }
@@ -33,26 +34,25 @@ public class MenuState extends State{
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.begin(); // Open container
+        batch.setProjectionMatrix(cameraPreset.combined); // Zoom in
+        batch.begin();
 
-        // draw objects
+        // Draw objects
         batch.draw(
                 background,
                 0,
                 0,
-                Gdx.graphics.getWidth(),
-                Gdx.graphics.getHeight()
+                SCREEN_WIDTH,
+                SCREEN_HEIGHT
         );
 
         batch.draw(
                 playButton,
-                (Gdx.graphics.getWidth() - playButton.getWidth()) / 2.2f,
-                (Gdx.graphics.getHeight()- playButton.getHeight()) / 2.2f,
-                playButton.getWidth() * 2.2f,
-                playButton.getHeight() * 2.2f
+                (SCREEN_WIDTH - playButton.getWidth()) / 2,
+                (SCREEN_HEIGHT - playButton.getHeight()) / 2
         );
 
-        batch.end(); // Close container
+        batch.end();
 
     }
 

@@ -5,49 +5,67 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mehrab.game.Flappy;
 import com.mehrab.game.sprites.Bird;
+import com.mehrab.game.sprites.Tube;
 
 public class PlayState extends State {
-    private Bird birdObj;
+    private Texture background;
+    private Bird bird;
+    private Tube tube;
 
     public PlayState(GameStateManager gsm) {
-        super(gsm); // Declare cameraPreset object in the super class
+        super(gsm); // CameraPreset object declared in the super class
 
-        // Set initial bird position
-        birdObj = new Bird(
-                Gdx.graphics.getWidth() / 8,
-                Gdx.graphics.getHeight() /8
-        );
+        cameraPreset.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        cameraPreset.setToOrtho(
-                false,
-                Gdx.graphics.getWidth() / 4,
-                Gdx.graphics.getHeight() / 4
-        );
+        background = new Texture("bg.png");
+
+        // Place bird on the center
+        bird = new Bird(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        // Set tube horizontal position
+        tube = new Tube(SCREEN_WIDTH / 2, SCREEN_WIDTH, SCREEN_HEIGHT);
     }
 
     @Override
     protected void handleInput() {
         if(Gdx.input.justTouched()){
-            birdObj.flap();
+            bird.flap(SCREEN_HEIGHT); // Flap on touch
         }
     }
 
     @Override
     public void update() {
         handleInput();
-        birdObj.update(); // Update bird velocity and position
+        bird.update(); // Update bird velocity and position
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.setProjectionMatrix(cameraPreset.combined); // zoom in using the camera presets
+        batch.setProjectionMatrix(cameraPreset.combined); // Zoom in
         batch.begin();
+
+        batch.draw(background, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+        // Draw tubes
+        batch.draw(
+                tube.getTopTube(),
+                tube.getTopTubePosition().x,
+                tube.getTopTubePosition().y
+        );
+
+        batch.draw(
+                tube.getBottomTube(),
+                tube.getBottomTubePosition().x,
+                tube.getBottomTubePosition().y
+        );
+
+
         // Draw bird based on it's position
         batch.draw(
-                birdObj.getTexture(),
-                birdObj.getPosition().x,
-                birdObj.getPosition().y
-        ); //
+                bird.getTexture(),
+                bird.getPosition().x,
+                bird.getPosition().y
+        );
         batch.end();
     }
 

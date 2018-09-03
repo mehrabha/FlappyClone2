@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 // Used by a game state (eg. Menu)
 public abstract class State {
+    protected final int SCREEN_WIDTH = 360;
+    protected final int SCREEN_HEIGHT = 600;
     protected OrthographicCamera cameraPreset;
     protected GameStateManager stateManager;
 

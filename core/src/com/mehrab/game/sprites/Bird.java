@@ -7,24 +7,38 @@ import com.badlogic.gdx.math.Vector2;
 public class Bird {
     private Vector2 position;
     private Vector2 velocity;
+    private Vector2 gravity;
 
     private Texture bird;
 
-    public Bird(int x_coord, int y_coord){
-        position = new Vector2(x_coord, y_coord); // default position
-        velocity = new Vector2(0, 0); // default velocity
-
+    public Bird(int screenWidth, int screenHeight){
+        // Set bird coordinates based on the provided screen size
+        velocity = new Vector2(0, 0);
+        gravity = new Vector2(0, -18);
         bird = new Texture("bird.png");
+
+        position = new Vector2(
+                (screenWidth - bird.getWidth()) / 2,
+                (screenHeight - bird.getHeight()) / 2
+        );
     }
 
     public void update(){
-        velocity.add(0, -15); // Increase velocity magnitude with time
+        if(velocity.y > -450) {
+            velocity.add(gravity); // Increase velocity magnitude with time
+        }
 
-        float deltaTime = Gdx.graphics.getDeltaTime(); // get time between each frame
+        if (Gdx.input.justTouched() && position.y <= 0){
+            position.y = 1; // Prevent the bird from being stuck to the bottom of the screen
+        }
 
-        // Update bird position based on velocity.
-        // Scale velocity with deltaTime to ensure constant bird speeds across all devices
-        position.add(0, velocity.y * deltaTime);
+        if(position.y > 0) { // Keep the bird from falling out of the screen
+            float deltaTime = Gdx.graphics.getDeltaTime(); // get time between each frame
+
+            // Update bird position based on velocity.
+            // Scale velocity with deltaTime to ensure constant bird speeds across all devices
+            position.add(0, velocity.y * deltaTime);
+        }
 
     }
 
@@ -36,7 +50,10 @@ public class Bird {
         return bird;
     }
 
-    public void flap() {
-        velocity.y = 250; // set velocity on the positive direction
+    public void flap(int screenHeight) {
+        // set velocity on the positive direction while the bird is inside the screen
+        if(position.y < screenHeight - bird.getHeight()) {
+            velocity.y = 400;
+        }
     }
 }
