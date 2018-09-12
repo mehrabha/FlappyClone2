@@ -3,26 +3,32 @@ package com.mehrab.game.sprites;
 import java.util.Random;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Tube {
-    private Texture topTube, bottomTube;
-    private Vector2 topTubePosition, bottomTubePosition;
-    private Random randomNumber;
+    private final int TUBE_SPEED = -2;
 
     private int gapLowest;
     private int gapPosition;
     private int gapSize;
 
-    public Tube(float horizontalPos, int screenWidth, int screenHeight){
+    private Texture topTube, bottomTube;
+    private Vector2 topTubePosition, bottomTubePosition;
+    private Rectangle topTubeCollisionBox, bottomTubeCollisionBox;
+    private Random randomNumber;
+
+    public Tube(int screenWidth, int screenHeight){
+        gapLowest = screenHeight / 4; // Set the lowest boundary at 25% of screen
+        gapPosition = screenHeight / 2; // Generate gap anywhere within 50% of the screen
+        gapSize = screenHeight / 5 ;
+
         topTube = new Texture("toptube.png");
         bottomTube = new Texture("bottomtube.png");
         randomNumber = new Random();
+    }
 
-        gapLowest = screenHeight / 4; // Set the lowest boundary at 25% of screen
-        gapPosition = screenHeight / 2; // Generate gap within 50% of the screen
-        gapSize = screenHeight / 5 ;
-
+    public void setTubePos(int horizontalPos){
         topTubePosition = new Vector2(
                 horizontalPos,
                 // Randomly generate a gap from 25% - 75%
@@ -34,6 +40,45 @@ public class Tube {
                 // Draw bottom tube under the top tube
                 topTubePosition.y - gapSize - bottomTube.getHeight()
         );
+
+        // Create collision box around tubes
+        topTubeCollisionBox = new Rectangle(
+                topTubePosition.x,
+                topTubePosition.y,
+                topTube.getWidth(),
+                topTube.getHeight()
+        );
+
+        bottomTubeCollisionBox = new Rectangle(
+                bottomTubePosition.x,
+                bottomTubePosition.y,
+                bottomTube.getWidth(),
+                bottomTube.getHeight()
+        );
+    }
+
+    // Continuously move tubes to the left
+    public void update(int screenWidth){
+        topTubePosition.add(TUBE_SPEED, 0);
+        bottomTubePosition.add(TUBE_SPEED, 0);
+
+        // Reset tube position once it moves past the screen
+        if(topTubePosition.x + screenWidth / 2 < 0){
+            setTubePos(screenWidth);
+        }
+
+        // Update tube collision box
+        topTubeCollisionBox.setPosition(topTubePosition);
+        bottomTubeCollisionBox.setPosition(bottomTubePosition);
+    }
+
+
+    public Boolean checkCollision(Rectangle bird) {
+        if(bird.overlaps(topTubeCollisionBox) || bird.overlaps(bottomTubeCollisionBox)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Texture getTopTube() {

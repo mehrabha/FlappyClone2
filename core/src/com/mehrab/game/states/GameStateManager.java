@@ -10,8 +10,9 @@ public class GameStateManager {
         states = new Stack<State>();
     }
 
+    // Push a game state into the stack
     public void pushState(State s) {
-        states.push(s); // push any subclass object into the stack
+        states.push(s);
     }
 
     public void popState() {
@@ -23,12 +24,14 @@ public class GameStateManager {
         states.push(s); // Replace with new state if it is provided
     }
 
+    // Update state at the top of the stack
     public void update() {
-        states.peek().update(); // Update new state
+        states.peek().update();
     }
 
+    // Render the state at the top of the stack
     public void render(SpriteBatch batch) {
-        states.peek().render(batch); // Render the state at the top of the stack
+        states.peek().render(batch);
     }
 
     public void dispose() {

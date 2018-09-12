@@ -9,7 +9,7 @@ public class MenuState extends State{
     private Texture playButton;
 
     public MenuState(GameStateManager gsm) {
-        super(gsm); // gsm is stored in the variable stateManager
+        super(gsm); // stateManager passed by from Flappy class
 
         cameraPreset.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
         background = new Texture("bg.png");
@@ -22,7 +22,7 @@ public class MenuState extends State{
             // push a new play state into the stack when screen is touched
             stateManager.pushState(new PlayState(stateManager));
 
-            // dump loaded menu textures
+            // Dump loaded menu textures
             dispose();
         }
     }
