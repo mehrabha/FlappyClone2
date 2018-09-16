@@ -5,13 +5,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mehrab.game.Flappy;
 import com.mehrab.game.sprites.Bird;
+import com.mehrab.game.sprites.Ground;
 import com.mehrab.game.sprites.Tube;
 import java.util.ArrayList;
 
 public class PlayState extends State {
-    private ArrayList<Tube> tubes;
     private Texture background;
     private Bird bird;
+    private ArrayList<Ground> grounds;
+    private ArrayList<Tube> tubes;
     private Boolean gameOver;
 
     public PlayState(GameStateManager gsm, SpriteBatch batch) {
@@ -20,10 +22,19 @@ public class PlayState extends State {
 
         background = new Texture("bg.png");
         bird = new Bird(SCREEN_WIDTH, SCREEN_HEIGHT);
+        grounds = new ArrayList();
         tubes = new ArrayList();
         gameOver = false;
 
-        // Push 3 tubes into the stack
+        // Push 2 ground objects into the list
+        for(int i = 0; i < 2; i++){
+            grounds.add(new Ground());
+        }
+
+        grounds.get(0).setGroundPos(0); // Place one on the screen
+        grounds.get(1).setGroundPos(SCREEN_WIDTH); // Place one to the right side of the screen
+
+        // Push 3 tubes into the list
         for(int i = 0; i < 3; i++){
             tubes.add(new Tube(SCREEN_WIDTH, SCREEN_HEIGHT));
         }
@@ -45,8 +56,10 @@ public class PlayState extends State {
                stateManager.pushState(new GameOverState(stateManager)); TODO
                dispose(); TODO
                 */
-                stateManager.pushState(new PlayState(stateManager, batch));
-                dispose(); //TODO
+                if(bird.getPosition().y <= 0) {
+                    stateManager.pushState(new PlayState(stateManager, batch));
+                    dispose(); //TODO
+                }
             }
         }
     }
@@ -60,7 +73,17 @@ public class PlayState extends State {
             for (int i = 0; i < 3; i++) {
                 tubes.get(i).update(SCREEN_WIDTH); // Move tubes
 
+                // if bird collides into tube
                 if(tubes.get(i).checkCollision(bird.getCollisionBox())) {
+                    gameOver = true;
+                }
+            }
+
+            for (int i = 0; i < 2; i++) {
+                grounds.get(i).update(SCREEN_WIDTH); // Move ground
+
+                // if bird hits the ground
+                if(grounds.get(i).checkCollision(bird.getCollisionBox())) {
                     gameOver = true;
                 }
             }
@@ -90,6 +113,15 @@ public class PlayState extends State {
             );
         }
 
+        // Draw ground
+        for(int i = 0; i < 2; i++) {
+            batch.draw(
+                    grounds.get(i).getGroundTexture(),
+                    grounds.get(i).getGroundPos().x,
+                    grounds.get(i).getGroundPos().y
+            );
+        }
+
         // Draw bird based on it's position
         batch.draw(
                 bird.getTexture(),
@@ -103,6 +135,10 @@ public class PlayState extends State {
     public void dispose() {
         background.dispose();
         bird.dispose();
+
+        for(int i = 0; i < 2; i++) {
+            grounds.get(i).dispose();
+        }
 
         for(int i = 0; i < 3; i++) {
             tubes.get(i).dispose();

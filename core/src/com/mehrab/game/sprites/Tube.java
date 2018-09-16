@@ -19,7 +19,7 @@ public class Tube {
     private Random randomNumber;
 
     public Tube(int screenWidth, int screenHeight){
-        gapLowest = screenHeight / 5; // Set the lowest boundary at 20% of screen
+        gapLowest = screenHeight / 4; // Set the lowest boundary at 25% of screen
         gapPosition = screenHeight / 2; // Generate gap anywhere within 50% of the screen
         gapSize = screenHeight / 5 ;
 

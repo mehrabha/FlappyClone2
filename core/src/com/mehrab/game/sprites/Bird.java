@@ -6,9 +6,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class Bird {
-    private final int GRAVITY = -18;
-    private final int MAX_FALL_VELOCITY = -500;
-    private final int JUMP_VELOCITY = 380;
+    private final float GRAVITY = -.35f;
+    private final float MAX_FALL_VELOCITY = -10f;
+    private final float JUMP_VELOCITY = 7f;
 
     private Vector2 position;
     private Vector2 velocity;
@@ -38,14 +38,9 @@ public class Bird {
             velocity.add(0, GRAVITY); // Increase velocity magnitude with time
         }
 
-        if (Gdx.input.justTouched() && position.y <= 0){
-            position.y = 1; // Prevent the bird from being stuck to the bottom of the screen
-        }
-
         if(position.y > 0) { // Keep the bird from falling out of the screen
             // Update bird position based on velocity.
-            // Scale velocity with deltaTime to ensure constant bird speeds across all devices
-            position.add(0, velocity.y * Gdx.graphics.getDeltaTime());
+            position.add(0, velocity.y);
         }
 
         // Follow collision box to the bird position
