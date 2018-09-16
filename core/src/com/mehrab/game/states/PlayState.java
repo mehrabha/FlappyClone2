@@ -14,8 +14,8 @@ public class PlayState extends State {
     private Bird bird;
     private Boolean gameOver;
 
-    public PlayState(GameStateManager gsm) {
-        super(gsm);
+    public PlayState(GameStateManager gsm, SpriteBatch batch) {
+        super(gsm, batch);
         cameraPreset.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         background = new Texture("bg.png");
@@ -23,12 +23,12 @@ public class PlayState extends State {
         tubes = new ArrayList();
         gameOver = false;
 
-        // Push 3 tubes into the array
+        // Push 3 tubes into the stack
         for(int i = 0; i < 3; i++){
             tubes.add(new Tube(SCREEN_WIDTH, SCREEN_HEIGHT));
         }
 
-        // Set intitial tube horizontal position
+        // Set tube starting position
         tubes.get(0).setTubePos(SCREEN_WIDTH * 2);
         tubes.get(1).setTubePos(SCREEN_WIDTH * 3 / 2);
         tubes.get(2).setTubePos(SCREEN_WIDTH);
@@ -45,6 +45,8 @@ public class PlayState extends State {
                stateManager.pushState(new GameOverState(stateManager)); TODO
                dispose(); TODO
                 */
+                stateManager.pushState(new PlayState(stateManager, batch));
+                dispose(); //TODO
             }
         }
     }
@@ -54,12 +56,10 @@ public class PlayState extends State {
         handleInput();
         bird.update(); // Move bird
 
-        // Move tube position unless game over
         if(!gameOver) {
             for (int i = 0; i < 3; i++) {
-                tubes.get(i).update(SCREEN_WIDTH);
+                tubes.get(i).update(SCREEN_WIDTH); // Move tubes
 
-                // If bird collides with any tube, the game is over
                 if(tubes.get(i).checkCollision(bird.getCollisionBox())) {
                     gameOver = true;
                 }
@@ -68,8 +68,8 @@ public class PlayState extends State {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
-        // Zoom in based on the screen size set in the State super class.
+    public void render() {
+        // Screen size set in the State super class.
         batch.setProjectionMatrix(cameraPreset.combined);
 
         batch.begin();
@@ -101,5 +101,11 @@ public class PlayState extends State {
 
     @Override
     public void dispose() {
+        background.dispose();
+        bird.dispose();
+
+        for(int i = 0; i < 3; i++) {
+            tubes.get(i).dispose();
+        }
     }
 }

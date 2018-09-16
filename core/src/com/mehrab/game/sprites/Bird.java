@@ -59,6 +59,10 @@ public class Bird {
         }
     }
 
+    public void dispose() {
+        bird.dispose();
+    }
+
     public Vector2 getPosition() {
         return position;
     }

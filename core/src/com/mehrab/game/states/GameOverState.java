@@ -3,8 +3,8 @@ package com.mehrab.game.states;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameOverState extends State{
-    public GameOverState(GameStateManager gsm) {
-        super(gsm);
+    public GameOverState(GameStateManager gsm, SpriteBatch batch) {
+        super(gsm, batch);
         stateManager = gsm;
     }
 
@@ -19,7 +19,7 @@ public class GameOverState extends State{
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void render() {
 
     }
 

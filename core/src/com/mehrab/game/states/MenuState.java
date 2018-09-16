@@ -8,8 +8,8 @@ public class MenuState extends State{
     private Texture background;
     private Texture playButton;
 
-    public MenuState(GameStateManager gsm) {
-        super(gsm); // stateManager passed by from Flappy class
+    public MenuState(GameStateManager gsm, SpriteBatch batch) {
+        super(gsm, batch); // stateManager passed by from Flappy class
 
         cameraPreset.setToOrtho(false, SCREEN_WIDTH, SCREEN_HEIGHT);
         background = new Texture("bg.png");
@@ -20,7 +20,7 @@ public class MenuState extends State{
     public void handleInput() {
         if(Gdx.input.justTouched()){
             // push a new play state into the stack when screen is touched
-            stateManager.pushState(new PlayState(stateManager));
+            stateManager.pushState(new PlayState(stateManager, batch));
 
             // Dump loaded menu textures
             dispose();
@@ -33,7 +33,7 @@ public class MenuState extends State{
     }
 
     @Override
-    public void render(SpriteBatch batch) {
+    public void render() {
         batch.setProjectionMatrix(cameraPreset.combined); // Zoom in
         batch.begin();
 

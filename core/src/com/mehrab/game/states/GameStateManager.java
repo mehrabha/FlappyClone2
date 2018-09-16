@@ -30,8 +30,8 @@ public class GameStateManager {
     }
 
     // Render the state at the top of the stack
-    public void render(SpriteBatch batch) {
-        states.peek().render(batch);
+    public void render() {
+        states.peek().render();
     }
 
     public void dispose() {

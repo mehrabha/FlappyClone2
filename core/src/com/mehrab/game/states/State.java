@@ -8,16 +8,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public abstract class State {
     protected final int SCREEN_WIDTH = 360;
     protected final int SCREEN_HEIGHT = 600;
-    protected OrthographicCamera cameraPreset;
     protected GameStateManager stateManager;
+    protected SpriteBatch batch;
+    protected OrthographicCamera cameraPreset;
 
-    protected State(GameStateManager gsm) {
+
+    protected State(GameStateManager gsm, SpriteBatch sb) {
         stateManager = gsm;
+        batch = sb;
         cameraPreset = new OrthographicCamera();
     }
 
     protected abstract void handleInput();
     public abstract void update();
-    public abstract void render(SpriteBatch batch);
+    public abstract void render();
     public abstract void dispose();
 }

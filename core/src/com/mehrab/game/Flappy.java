@@ -8,29 +8,29 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mehrab.game.states.MenuState;
 
 public class Flappy extends ApplicationAdapter {
-	private GameStateManager stateManager;
-	private SpriteBatch batch;
-	
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		stateManager = new GameStateManager();
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		// push a new menu state into the stack upon launch
-		stateManager.pushState(new MenuState(stateManager));
-	}
+    private GameStateManager stateManager;
+    private SpriteBatch batch;
 
-	@Override
-	public void render () {
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // white screen
+    @Override
+    public void create () {
+        batch = new SpriteBatch();
+        stateManager = new GameStateManager();
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        // push a new menu state into the stack upon launch
+        stateManager.pushState(new MenuState(stateManager, batch));
+    }
 
-		// update and render the pushed state
-		stateManager.update();
-		stateManager.render(batch);
-	}
-	
-	@Override
-	public void dispose () {
-		stateManager.dispose();
-	}
+    @Override
+    public void render () {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // white screen
+
+        // update and render the pushed state
+        stateManager.update();
+        stateManager.render();
+    }
+
+    @Override
+    public void dispose () {
+        stateManager.dispose();
+    }
 }
